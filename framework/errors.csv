@@ -1,0 +1,3 @@
+proguard,test,/Users/Mahmoud/Documents/PhD_projects/Obfuscation/dataset/test/test.apk,(<class 'AttributeError'>, AttributeError("module 'run_proguard' has no attribute 'proguard_obfuscate_app'",), <traceback object at 0x102487f08>)
+proguard,test,/Users/Mahmoud/Documents/PhD_projects/Obfuscation/dataset/test/test.apk,(<class 'AttributeError'>, AttributeError("module 'run_proguard' has no attribute 'proguard_obfuscate_app'",), <traceback object at 0x102687f08>)
+apktool-decode,test,/Volumes/Android/obfuscationStudy/dataset/virusshare/test/test.apk,(None, None, None)
