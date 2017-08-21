@@ -15,8 +15,7 @@ if len(sys.argv) < 3:
 
 regex = re.compile(r"(AndroidOS_|TrojanSpyAndroidOS\.|Android-Malicious\.|TrojanAndroid\.|AndroidOS\.|Trojan-Spy\.|Trojan\.|Android\.|Andr\.|\.\w\.|\-\w)|\(\w\)|\.\w\n", re.IGNORECASE)
 
-myApiKey = '75d85f8947ad4c6c5d47c373c4bd9f2b14bf877183c3575c3f44a1a94839e4c1' #hammadm@uci
-# myApiKey = '5a5323984be0004b4d6aaefd40fb9af4cc7fff35884e29c1fe9f2947dd6370d7' #josh@uci
+myApiKey = 'ADD_YOUR_KEY_HERE'
 maxRequestPerMinute = 600
 
 frameworkDir = sys.argv[1]

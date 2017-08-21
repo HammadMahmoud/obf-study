@@ -165,7 +165,7 @@ if __name__ == "__main__":
     dataset_dir = '/share/seal/hammadm/obf/Obfuscation/dataset'
     dirs['Benign'] = os.path.join(dataset_dir,'pure_benign_apps')
     dirs['Virusshare'] = os.path.join(dataset_dir,'virusshare')
-    dirs ['Matteo'] = os.path.join(dataset_dir,'matteo_malware')
+    dirs ['study'] = os.path.join(dataset_dir,'matteo_malware')
     dirs ['BrainTest'] = os.path.join(dataset_dir,'BrainTest')
     dirs ['FalseGuide'] = os.path.join(dataset_dir,'falseGuide')
     dirs ['VikingHorde'] = os.path.join(dataset_dir,'VikingHorde')

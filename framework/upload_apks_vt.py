@@ -19,8 +19,8 @@ if len(sys.argv) < 3:
     sys.exit()
 
 
-key = '75d85f8947ad4c6c5d47c373c4bd9f2b14bf877183c3575c3f44a1a94839e4c1' #hammadm 
-# key = '5a5323984be0004b4d6aaefd40fb9af4cc7fff35884e29c1fe9f2947dd6370d7' #josh@uci
+key = 'ADD_YOUR_VIRUS_TOTAL_KEY_HERE' 
+
 frameworkDir = sys.argv[1]  
 file_suffix =   sys.argv[2]
 

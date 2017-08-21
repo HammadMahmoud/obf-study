@@ -1,5 +1,7 @@
+./framework/.pyc
 ./framework/app_to_folder.py
-./framework/clean_up.py
+./framework/clean_up.*
+./framework/db_results_adam*
 ./framework/create_adagio_train_test.*
 ./framework/create_train_test.*
 ./framework/db_results_adam.*
