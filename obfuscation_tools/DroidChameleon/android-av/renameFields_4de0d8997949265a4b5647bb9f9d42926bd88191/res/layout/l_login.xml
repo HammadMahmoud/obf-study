@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/widget29" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/lbloginname" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/loginname" />
+    <EditText android:textSize="18.0sp" android:id="@id/tblogin" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="" />
+    <TextView android:id="@id/lbpwd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pwd" />
+    <EditText android:textSize="18.0sp" android:id="@id/tbpwd" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="" android:password="true" />
+    <Button android:layout_gravity="right" android:id="@id/loginbtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/loginsubmit" />
+</LinearLayout>

@@ -1,0 +1,294 @@
+#!/usr/bin/python
+import pdb
+import ddinject as dd
+import reflection as reflect
+import os
+import sys
+import xml.etree.ElementTree as etree
+import shutil
+
+pkg = ''
+if sys.argv[-3][0] != '-':
+    pkg = sys.argv[-1].replace('.', '/')
+    sys.argv = sys.argv[0:-1]
+
+para_num = len(sys.argv)
+
+apk_in = sys.argv[para_num - 2]
+apk_out = sys.argv[para_num - 1]
+
+para = ["-transformAndroidManifest", "-renameclasses", "-reverseorder",\
+                "-encString", "-encArrays", "-remDebugInfo", "-reorder", "-nontrivialjunk",\
+                "-insertnops", "-insertFunctionIndirection", "-doci", "-renameMethods", "-renameFields"]
+check = []
+
+check_pass = 1
+
+current_path = sys.argv[0][:sys.argv[0].rfind("/")]
+
+# current_path = ./android-av-eecs354
+
+def trans_layout(map_dict, filename):
+    '''
+    This function is to change xml file in res/layout
+
+    map_dict is the dictionary about mapping relationship. filename is absolute path.
+    '''
+
+    etree.register_namespace('android',
+        "http://schemas.android.com/apk/res/android")
+
+    tree = etree.parse(filename)
+    layout = tree.getroot()
+
+    #mainly chaging two places: 1. all the attribute with "@" sign in their value. 2. "onClick" attribute
+    for elements in layout.iter():
+        for atts in elements.items():
+            if atts[1].find ("@") != -1:
+                origin = atts[1][atts[1].find("/") + 1 : ]
+                if origin in map_dict:
+                    replace = map_dict[origin];
+                    elements.set(atts[0],atts[1][:atts[1].find("/") + 1 ] + replace)
+
+    for attribute in layout.iter():
+        onclick = attribute.get("{http://schemas.android.com/apk/res/android}onClick")
+        if onclick != None:
+            if onclick in map_dict:
+                attribute.set("{http://schemas.android.com/apk/res/android}onClick", map_dict[onclick])
+
+    tree.write(filename, encoding="utf-8", xml_declaration=True)
+
+def changeManifest(path,apk_in):
+    '''
+            This function is to change the Manifest.xml
+    '''
+    filename = path + "AndroidManifest.xml"
+    #os.chdir(os.popen('pwd').read()[:-1])
+
+    etree.register_namespace('android',
+        "http://schemas.android.com/apk/res/android")
+    map_relation = open("output.txt")
+    map_dict = {};
+
+    #Get mapping relationship into a dictionary.
+    for line in map_relation:
+        original = line[ : line.find(" ")]
+        trans = line[line.find(" ") + 1 : -1]
+        map_dict[original] = trans;
+
+    tree = etree.parse(filename)
+    manifest = tree.getroot()
+
+    #change attribute value of "package"
+    package_list = manifest.get("package").split(".");
+    for i in range(0, len(package_list)):
+        if package_list[i] in map_dict:
+            package_list[i] = map_dict[package_list[i]]
+    package = ".".join(package_list)
+    manifest.set("package", package)
+
+    # name means android:name, don't need to write "android:"
+    # here, you can add any elements and their attributes, if the value format is abc="def.ghi.jkl".
+
+    change_dict = {"activity":["name","parentActivityName"], "activity-alias":["name"], \
+                                    "service":["name"],"receiver":["name"], "provider":["name"]}
+
+    for elements in change_dict.items():
+        for activity in manifest.iter(elements[0]):
+            #pdb.set_trace();
+            for attribute in elements[1]:
+                attribute_value = activity.get("{http://schemas.android.com/apk/res/android}" + attribute)
+                if attribute_value != None:
+                    # pdb.set_trace();
+                    attr_list = attribute_value.split(".")
+                    for i in range(0, len(attr_list)):
+                        if attr_list[i] in map_dict:
+                            attr_list[i] = map_dict[attr_list[i]]
+                attr_value = ".".join(attr_list);
+                activity.set("{http://schemas.android.com/apk/res/android}name", attr_value)
+
+    tree.write(filename, encoding="utf-8", xml_declaration=True)
+    map_relation.close();
+
+
+    for root, dirs, files in os.walk(apk_in + "/res/layout"):
+        for f in files:
+            if f[-3 : ] == "xml":
+                filename = os.path.join(root, f);
+                tree = etree.parse(filename)
+                layout = tree.getroot()
+                for elements in layout.iter():
+                    if elements.tag.find("com") != -1:
+                        elements_list = elements.tag.split(".");
+                        for i in range(1, len(elements_list)):
+                            if elements_list[i] in map_dict:
+                                elements_list[i] = map_dict[elements_list[i]]
+                                elements.tag = ".".join(elements_list)
+                tree.write(filename, encoding="utf-8", xml_declaration=True)
+
+
+#do input checking
+
+if len(sys.argv) <= 3:
+    check_pass = 0
+    if len(sys.argv) == 1 or sys.argv[1] == "-help" and len(sys.argv) == 2 : #help or no command
+        f = open(current_path + "/HELP")
+        for help_line in f:
+            print help_line[:-1]
+    else:
+        check.append("\nplease input right commands\n\t***EXAMPLE: droidc -tranType input.apk output.apk***")
+        check.append("Input droidc -help or open README to see more commands\n")
+else:
+    for i in range(1,para_num - 2):
+        if sys.argv[i] not in para:
+            check.append(sys.argv[i] + " is illegal\n")
+            check_pass = 0
+    if apk_in.find(".apk") == -1:
+        check_pass = 0
+        check.append("The input file should be .apk file\n")
+    if apk_out.find(".apk") == -1:
+        check_pass = 0
+        check.append("The output file should be .apk file\n")
+
+'''
+print apk_in
+print apk_out
+print path
+'''
+
+
+if check_pass == 1:
+
+    path = apk_in[:-4] + "/"
+
+    os.system("rm -rf " + apk_in[:-4])
+
+    os.system("apktool d " + apk_in)
+
+#reorder will always be put at the end
+
+    for i in range(0, para_num - 2):
+        if sys.argv[i] == para[6]:
+            tmp = sys.argv[para_num - 3]
+            print "tmp: " + tmp
+            sys.argv[para_num - 3] = sys.argv[i]
+            sys.argv[i] = tmp;
+            break
+
+    rename = 0;
+    renameArgs = [];
+
+    for i in range(0, para_num - 2):
+        if sys.argv[i] == para[0]:
+            dd.transformAndroidManifest( path + 'AndroidManifest.xml')
+        elif sys.argv[i] == para[1]:
+            rename = 0; # NOT SURE ABOUT THIS
+            dd.renameclasses(path + "smali/" + pkg)
+            changeManifest(path, apk_in[ : -4]);
+        elif sys.argv[i] == para[2]:
+            dd.reverseorderRecursive(path + 'smali/' + pkg)
+        elif sys.argv[i] == para[3]:
+            dd.encStringsRecursive( path + 'smali/' + pkg)
+            os.system("cp " + current_path + "/EncryptString.smali " + path + 'smali/com/');
+        elif sys.argv[i] == para[4]:
+            dd.encArraysRecursive( path + 'smali/' + pkg)
+        elif sys.argv[i] == para[5]:
+            dd.remDebugInfoRec( path + 'smali/' + pkg)
+        elif sys.argv[i] == para[6]:
+            dd.reorderRecursive(path + 'smali/' + pkg)
+        elif sys.argv[i] == para[7]:
+            dd.nontrivialjunkrecursive(path + 'smali/' + pkg)
+        elif sys.argv[i] == para[8]:
+            dd.insertnopsrecursive(path + 'smali/' + pkg)
+        elif sys.argv[i] == para[9]:
+            dd.insertFuncIndirectionRecursive(path + 'smali/' + pkg)
+        elif sys.argv[i] == para[10]:
+            reflect.docirecursive(path + 'smali/' + pkg)
+        elif sys.argv[i] == para[11]:
+            rename = 1
+            renameArgs.append(para[11])
+        elif sys.argv[i] == para[12]:
+            rename = 1
+            renameArgs.append(para[12])
+
+    # build and sign
+    package_apk = "apktool b " + apk_in[:-4] + " " + apk_out
+    os.system(package_apk)
+    os.system("perl -e 'print \"123123\"' | jarsigner -verbose -sigalg SHA1withDSA -digestalg SHA1 -keystore " \
+            + current_path + "/key.keystore " + apk_out + " myKey")
+
+    if rename == 1:
+
+        print "* depack again *"
+
+        argLen = len(renameArgs)
+        if (argLen == 2):
+            transformArg = "-all"
+        elif (argLen == 1):
+            transformArg = renameArgs[0]
+
+
+        # prepare to call scala file
+        os.system("apktool d -s -f " + apk_out)
+        os.system("rm -rf " + apk_out);
+#               pwd = os.popen('pwd').read()
+#               print pwd;     # pwd: /Users/zhaoyangliu/Desktop/Current/droid
+        cp_command = "cp -r " + current_path + "/renameClassMethField/lib/ ."
+        print cp_command
+        os.system(cp_command)
+        os.system("cp " + current_path + "/renameClassMethField/android.dex .")
+
+        scala_cmd = "scala -cp .:lib/dexlib-1.3.0-dev.jar " +  current_path + "/renameClassMethField/rename.scala " \
+                + transformArg + " " + apk_out[:-4] + "/Classes.dex " + apk_out[:-4] + "/newclasses.dex > output.txt"
+        print scala_cmd
+        os.system(scala_cmd)
+        mv_cmd = "mv " + apk_out[:-4] + "/newclasses.dex " + apk_out[:-4] + "/Classes.dex "
+        os.system(mv_cmd);
+
+        #parse the output file to a dictionary.
+
+        f = open("output.txt")
+        line = f.readline();
+        current_pos = 4;
+        map_dict = {};
+        while line.find(",", current_pos) != -1:
+            key_pos = line.find(" ", current_pos);
+            key = line[current_pos : key_pos]
+            current_pos = key_pos + 4;
+            value_pos = line.find(",", current_pos);
+            value = line[current_pos : value_pos];
+            current_pos = value_pos + 2;
+            map_dict[key] = value;
+
+        key_pos = line.find(" ", current_pos);
+        key = line[current_pos : key_pos]
+        current_pos = key_pos + 4;
+        value_pos = line.find(")", current_pos);
+        value = line[current_pos : value_pos];
+        map_dict[key] = value;
+
+        #change every xml file in res/layout
+
+        for root, dirs, files in os.walk(apk_out[:-4] + "/res/layout"):
+            for f in files:
+                if f[-3 : ] == "xml":
+                    trans_layout(map_dict, os.path.join(root, f))
+
+        #build it and sign it.
+
+        package_apk = "apktool b " + apk_out[:-4] + " " + apk_out
+        os.system(package_apk)
+        os.system("perl -e 'print \"123123\"' | jarsigner -verbose -sigalg SHA1withDSA -digestalg SHA1 -keystore " \
+        + current_path + "/key.keystore " + apk_out + " myKey")
+        # w = open("map.txt", "w")
+        # for x in map_dict.items():
+        #       w.write(x[0] + " " + x[1] + "\n");
+
+
+else:
+    for i in check:
+        print i;
+
+os.system("rm -rf " + apk_in[:-4])
+os.system("rm -rf lib android.dex map.txt Helper.smali" )
+os.system("rm -rf " + apk_out[:-4])

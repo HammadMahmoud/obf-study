@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, loginActivity!</string>
+    <string name="app_name">"I'go Reader"</string>
+    <string name="loginname">Gmail账号：</string>
+    <string name="pwd">Gmail密码：</string>
+    <string name="loginsubmit">登 陆</string>
+    <string name="menu_exit">退出</string>
+    <string name="menu_back">返回</string>
+</resources>

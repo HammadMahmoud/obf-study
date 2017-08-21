@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Created-By: 1.8.0_20 (Oracle Corporation)
+
+Name: res/layout/l_login.xml
+SHA1-Digest: IJ10JX+yYn5gj9MzRHG9aT2ae+Y=
+
+Name: AndroidManifest.xml
+SHA1-Digest: vmQxrgRcVrLnISRkmbvOciC0QNA=
+
+Name: res/drawable/icon.png
+SHA1-Digest: ac1H0wDH+3NQ5ZSCKsZwNoYcAvw=
+
+Name: res/layout/main.xml
+SHA1-Digest: PHyPNPw/8enZEKkXNftuGImmKsE=
+
+Name: res/layout/l_webview.xml
+SHA1-Digest: 4G8ZLoMhp6/VLhh7Mk0fd7JB/Ys=
+
+Name: resources.arsc
+SHA1-Digest: uv841vVkUcTDKW93Q3Ksup+GVGw=
+
+Name: res/layout/list_items.xml
+SHA1-Digest: aeHWJ6TgTGRyOXzGeL/38nC4R7A=
+
+Name: classes.dex
+SHA1-Digest: u+WMwgWKKcl4fs6lkVj7ZjfSC2M=
+
+Name: res/layout/list_13.xml
+SHA1-Digest: Vj2AM9YJyKUS4qw+XFPM2GJv18U=
+

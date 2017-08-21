@@ -1,0 +1,6 @@
+- You will need java, python, and apktool in your path. jarsigner, a utility that comes with java, is also needed.
+- There is a python script `droidc`, which serves as the entry point. Run that command without any arguments or see `HELP` for help.
+- Our paper did not have automatic changing of AndroidManifest. This is now implemented but the implementation may be flaky. If there are any problems, please verify the changes are happening correctly. You may need to manually correct them.
+- Some transformations, specifically reflection, code reordering, and call indirection, are not as well tested as others. These are more complicated also.
+- There are occasional VerifyErrors with other transformations also. In case, you are having a problem for which you definitely need a solution, let me know and I may be able to look into it.
+

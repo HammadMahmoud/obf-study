@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="widget29">false</item>
+    <item type="id" name="lbloginname">false</item>
+    <item type="id" name="tblogin">false</item>
+    <item type="id" name="lbpwd">false</item>
+    <item type="id" name="tbpwd">false</item>
+    <item type="id" name="loginbtn">false</item>
+    <item type="id" name="webview">false</item>
+    <item type="id" name="status">false</item>
+    <item type="id" name="RelativeLayout01">false</item>
+    <item type="id" name="ItemTitle">false</item>
+</resources>

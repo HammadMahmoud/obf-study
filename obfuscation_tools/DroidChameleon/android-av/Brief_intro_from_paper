@@ -1,0 +1,47 @@
+AndroidManifest
+	Repacking
+	Detection signatures that match the developer keys or a checksum of the entire application package are rendered ineffective by this transformation.
+	Disassembling and Reassembling:
+	a compiled program may be represented in more than one form. Signatures that match the whole classes.dex are beaten by this transformation.
+
+
+Types of Transformations
+	1. -transformAndroidManifest 	--> 	transformAndroidManifest('AndroidManifest.xml')
+	2. -renameclasses 				--> 	renameclasses('com')
+	3. -reverseorder 				--> 	reverseorderRecursive('smali')
+    4. -encString 					--> 	encStringsRecursive('com')
+    5. -encArrays 					--> 	encArraysRecursive('com')
+    6. -remDebugInfo 				--> 	remDebugInfoRec('com')              //removeDebug info
+    7. -reorder 					-->		reorderRecursive('smali')
+    8. -nontrivialjunk 				-->		nontrivialjunkrecursive('smali')
+   	9. -insertnops 					--> 	insertnopsrecursive('FOBkUD')
+   10. -insertFuncIndirection 		--> 	insertFuncIndirectionRecursive('hxbvgH')
+
+
+
+1)Changing Package Name: Every application is identified by a package name unique to the application. This name is defined in the package’s AndroidManifest.
+
+
+2) Identifier Renaming: pointer...
+
+3) Data Encryption:
+All the strings are stored in an encoded form, such as by the application of a simple Caesar cipher
+
+4) Call Indirections:
+A call C --> A call B(created by us), B call C
+
+5) Code Reordering    This transformation is accomplished by reordering the instructions and inserting goto instructions to preserve the runtime execution sequence of the instructions.
+
+6) Junk Code Insertion:
+introduce code sequences that are executed but do not affect rest of the program
+
+
+7) Encrypting Payloads and Native Exploits:   Some malware will pack code exploiots and decrypted at runtime. we can encrypted the bytecode for these programs.
+
+8) Function Outlining and Inlining: In function outlining, a function is broken down into several smaller functions. Function inlining involves replacing a function call with the entire function body. 
+
+
+9) 
+
+
+

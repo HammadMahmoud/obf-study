@@ -1,0 +1,58 @@
+{
+    "avg": {
+        "enabled": true, 
+        "malNote": "Displayed activity com.antivirus/.ui.UnInstall", 
+        "notifiesSafe": false, 
+        "port": 5554, 
+        "safeNote": "com.antivirus: cancel(10)"
+    }, 
+    "btd": {
+        "enabled": false, 
+        "malNote": null, 
+        "notifiesSafe": false, 
+        "port": 5556, 
+        "safeNote": null
+    }, 
+    "crt": {
+        "enabled": false, 
+        "malNote": "is malicious\"))", 
+        "notifiesSafe": false, 
+        "port": 5558, 
+        "safeNote": "is clean\"))"
+    }, 
+    "drw": {
+        "enabled": false, 
+        "malNote": null, 
+        "notifiesSafe": false, 
+        "port": 5560, 
+        "safeNote": null
+    }, 
+    "est": {
+        "enabled": false, 
+        "malNote": null, 
+        "notifiesSafe": false, 
+        "port": 5562, 
+        "safeNote": null
+    }, 
+    "lkt": {
+        "enabled": false, 
+        "malNote": "Displayed activity com.lookout/.ui.WarnOfThreatActivity:", 
+        "notifiesSafe": false, 
+        "port": 5564, 
+        "safeNote": null
+    }, 
+    "nrt": {
+        "enabled": false, 
+        "malNote": null, 
+        "notifiesSafe": false, 
+        "port": 5566, 
+        "safeNote": null
+    }, 
+    "ntq": {
+        "enabled": false, 
+        "malNote": null, 
+        "notifiesSafe": false, 
+        "port": 5568, 
+        "safeNote": null
+    }
+}

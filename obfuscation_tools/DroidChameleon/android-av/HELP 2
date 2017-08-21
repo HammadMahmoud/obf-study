@@ -1,0 +1,38 @@
+
+****************************************
+Name:DroidChameleon
+version: 1.0.0
+****************************************
+
+Usage: droidc COMMAND... INPUTAPK OUTPUTAPK [PACKAGE]
+
+COMMANDs:
+	-renameclasses 			
+		The compiled Dalvik bytecode in classes.dex of the application package may be disassembled and then reassembled back again. Signatures that match the whole classes.dex are beaten by this transformation.
+	-reverseorder 			
+		Through disassembling and assembling the compiled Dalvik bycode, Signatures that depend on the order of different items in the dex file will also likely break with this transformation. 
+	-encString 				
+		Strings are ecrypted. The dex files contain all the strings and array data. These strings and arrays may be used to develop signatures against malware.
+	-encArrays 				
+		Arrays are ecrypted. The dex files contain all the strings and array data. These strings and arrays may be used to develop signatures against malware.
+	-remDebugInfo 			
+		Bytecode typically contains a lot of debug information, such as source file names, local and parameter variable names, and source line numbers. All this information may be stripped off.
+	-reorder 				
+		Reordering the instructions and inserting goto instructions to preserve the runtime execution sequence of the instructions.
+	-nontrivialjunk 			
+		Introduce code sequences that are executed but do not affect rest of the program
+	-insertnops 				
+		Simply inserts sequences of nop instructions in the code. It is easy to detect and undo.
+	-insertFunctionIndirection 	
+		Given a method call, the call is converted to a call to a previously non-existing method that then calls the method in the original call.
+	-doci
+		Modifies source code and introduces call indirection
+	-renameMethods
+		Renames methods contained in the source code
+	-renameFields
+		Renames fields contained in the source code
+
+PACKAGE:
+	Only classes inside the Java package PACKAGE will be modified. The default is the root package. This has no effect fore renameMethods and renameFields transformations.
+
+EXAMPLE: droidc -transType input.apk output.apk com.abc
